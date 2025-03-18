@@ -11,6 +11,7 @@ export default function Header() {
   <img src="/Images/Logo.png" alt="ClubNect Logo" className="h-12" />
   <span className="text-lg font-semibold">ClubNect</span>
 </Link>
+
       <div className="flex items-center space-x-4">
         <Link to="/login" className="text-gray-600 hover:text-gray-900">Login</Link>
         {isLoginPage ? (

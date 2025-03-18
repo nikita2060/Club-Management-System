@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
-export default function Login() {
+export default function Login() 
+{
   const location = useLocation();
+
   const isRegisterUser = location.pathname === '/register/user';
   const isRegisterClub = location.pathname === '/register/club';
   const isRegisterOrg = location.pathname === '/register/organization';
   const isLogin = location.pathname === '/login';
+
+  const role = isRegisterUser ? 'user' : isRegisterClub ? 'club' : isRegisterOrg ? 'organization' : undefined;
+  // if isRegisterUser is true, role = 'User' if not then it moves to next condition as  condition ? value_if_true : value_if_false;
 
   // 🔹 Step 1: State to store input values
   const [formData, setFormData] = useState({
@@ -26,21 +32,41 @@ export default function Login() {
   };
 
   // 🔹 Step 4: Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    // Simulate data being "saved"
-    console.log('Form Data Submitted:', formData);
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/register" , {
+        name : formData.name,
+        email : formData.email,
+        usn : formData.usn,
+        password : formData.password,
+        role:role.toLowerCase(),
+        description : formData.description
 
-    // Show success message
-    setSuccessMessage('Registration Successful!');
+        });
 
-    // 🔹 Step 5: Clear input fields after submission
-    setFormData({ name: '', email: '', usn: '', description: '', password: '' });
+        setSuccessMessage(response.data.message);
+        console.log(response.data.message);
 
-    // Hide success message after 3 seconds
-    setTimeout(() => setSuccessMessage(''), 3000);
-  };
+        
+        // 🔹 Step 5: Clear input fields after submission
+        setFormData({ name: '', email: '', usn: '', description: '', password: '' });
+
+        // Hide success message after 3 seconds
+        setTimeout(() => setSuccessMessage(''), 3000);
+      
+    } catch (error) {
+
+      console.error("Registration Error:", error.response ? error.response.data : error.message);
+      setSuccessMessage(error.response?.data?.message || 'Registration failed');
+      
+    }
+  }
+
+
+
+
 
   return (
     <div className="min-h-[calc(100vh-64px)] bg-[#f3f4f9] flex items-center justify-center p-4">
