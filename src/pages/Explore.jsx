@@ -77,7 +77,7 @@ export default function Explore() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {popularClubs.map((club) => (
             <div key={club.name} className="bg-white rounded-lg p-4 text-center">
-              <img src={club.image} alt={club.name} className="w-16 h-16 rounded-full mx-auto mb-2" />
+              <img src={club.image} alt={club.name} className="w-24 h-24 rounded-full mx-auto mb-2 object-cover" />
               <h3 className="font-medium">{club.name}</h3>
             </div>
           ))}
