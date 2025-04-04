@@ -27,4 +27,11 @@ out/
 
 # OS-specific files
 .DS_Store
-Thumbs
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.cache
+
+# Git-related
+.git/
