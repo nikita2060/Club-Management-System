@@ -14,15 +14,15 @@ export default function Header() {
 
       <div className="flex items-center space-x-4">
         <Link to="/login" className="text-gray-600 hover:text-gray-900">Login</Link>
-        {isLoginPage ? (
-          <Link to="/" className="bg-[#1e293b] text-white px-4 py-2 rounded-md">
-            Home
-          </Link>
-        ) : (
-          <Link to="/explore" className="bg-[#1e293b] text-white px-4 py-2 rounded-md">
-            Explore
-          </Link>
-        )}
+        {location.pathname === '/' ? (
+  <Link to="/explore" className="bg-[#1e293b] text-white px-4 py-2 rounded-md">
+    Explore
+  </Link>
+) : (
+  <Link to="/" className="bg-[#1e293b] text-white px-4 py-2 rounded-md">
+    Home
+  </Link>
+)}
       </div>
     </header>
   );
