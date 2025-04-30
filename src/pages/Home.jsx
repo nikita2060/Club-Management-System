@@ -19,13 +19,14 @@ export default function Home() {
 
   // 🔹 Gallery Images List (Slideshow)
   const galleryImages = [
-    "/Images/gallery6.jpeg",
-    "/Images/gallery_nsb.jpeg",
-    "/Images/gallery3.jpeg",
-    "/Images/gallery2.jpeg",
-    "/Images/gallery5.jpeg",
     "/Images/gallery1.jpeg",
-    "/Images/gallery_music.jpeg",
+    "/Images/gallery2.jpeg",
+    "/Images/gallery3.jpeg",
+    "/Images/gallery5.jpeg",
+    "/Images/gallery6.jpeg",
+    "/Images/gallery7.jpeg",
+    "/Images/gallery8.jpeg",
+    "/Images/gallery9.jpeg",
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
