@@ -36,63 +36,31 @@ export default function Login()
     e.preventDefault();
 
     try {
-      // Check if we're on the login page
-      if (isLogin) {
-        // Handle login logic
-        const loginResponse = await axios.post("http://localhost:5000/api/auth/login", {
-          email: formData.email,
-          password: formData.password
-        });
-        
-        // Store token in localStorage
-        localStorage.setItem('token', loginResponse.data.token);
-        localStorage.setItem('user', JSON.stringify(loginResponse.data.user));
-        
-        setSuccessMessage('Login successful! Redirecting...');
-        
-        // Redirect to home page after successful login
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 1500);
-        
-      } else {
-        // Handle registration
-        // Create payload with required fields
-        const payload = {
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        };
-        
-        // Add optional fields based on role
-        if (role) {
-          payload.role = role;
-        }
-        
-        if (formData.usn && !isRegisterClub && !isRegisterOrg) {
-          payload.usn = formData.usn;
-        }
-        
-        if ((isRegisterClub || isRegisterOrg) && formData.description) {
-          payload.description = formData.description;
-        }
-        
-        console.log("Sending registration payload:", payload);
-        
-        const response = await axios.post("http://localhost:5000/api/auth/register", payload);
+      const response = await axios.post("http://localhost:5000/api/auth/register" , {
+        name : formData.name,
+        email : formData.email,
+        usn : formData.usn,
+        password : formData.password,
+        role:role.toLowerCase(),
+        description : formData.description
 
-        setSuccessMessage(response.data.message || 'Registration successful!');
+        });
+
+        setSuccessMessage(response.data.message);
         console.log(response.data.message);
+
         
         // 🔹 Step 5: Clear input fields after submission
         setFormData({ name: '', email: '', usn: '', description: '', password: '' });
 
         // Hide success message after 3 seconds
         setTimeout(() => setSuccessMessage(''), 3000);
-      }
+      
     } catch (error) {
+
       console.error("Registration Error:", error.response ? error.response.data : error.message);
       setSuccessMessage(error.response?.data?.message || 'Registration failed');
+      
     }
   }
 
@@ -169,10 +137,9 @@ export default function Login()
 
               {/* Submit Button */}
               <button type="submit" className="w-full bg-primary text-white rounded-md py-2 hover:bg-secondary transition-colors">
-                {isLogin ? 'Login' : 
-                 isRegisterUser ? 'Register User' :
+                {isRegisterUser ? 'Register User' :
                  isRegisterClub ? 'Register Club' :
-                 isRegisterOrg ? 'Register Organization' : 'Submit'}
+                 isRegisterOrg ? 'Register Organization' : 'Login'}
               </button>
             </form>
           </div>

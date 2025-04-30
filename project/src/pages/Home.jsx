@@ -1,28 +1,20 @@
 import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // Get user data from localStorage or your auth state
-    const userData = JSON.parse(localStorage.getItem('user'));
-    setUser(userData);
-  }, []);
-
   // 🔹 Popular Clubs List
   const popularClubs = [
-    { name: "Enigma", image: "/Images/Enigma Logo (NO BG).png", link: "https://enigma-club.vercel.app/?fbclid=PAZXh0bgNhZW0CMTEAAae6qXXF3I0ve_KuERfh8WPrpVBOAIFMtT9nLJ5ippGh6kI25NaO826AcYGxWA_aem_jeFxpIhteXuLRKwVP0XvxQ" },
-    { name: "Tech Council", image: "/Images/Tech Council.png", link: "https://linktr.ee/TechCouncilSCSE?fbclid=PAZXh0bgNhZW0CMTEAAaetXUSD2sV_-FRZYxU1Rm0fKWjBY-_tPP8cOtg-YWb_P5NqDbjjFrQGbN4H7A_aem_UEAyUIQE9nLKvqWn5_YBFg" },
-    { name: "Neuron", image: "/Images/Neuron.png", link: "https://www.instagram.com/neuron.ai_club/" },
-    { name: "Cypher", image: "/Images/Cypher.png", link: "https://www.instagram.com/cypher_shield/" },
+    { name: "Enigma", image: "/Images/Enigma Logo (NO BG).png" },
+    { name: "Cultural", image: "/Images/Cultural.png" },
+    { name: "Neuron", image: "/Images/Neuron.png" },
+    { name: "Cypher", image: "/Images/Cypher.png" },
   ];
 
   // 🔹 Following Clubs List
   const followingClubs = [
-    { name: "Turing Club", image: "/Images/Turing.png", link: "https://www.instagram.com/turingclubfetju/" },
-    { name: "FOSS", image: "/Images/Foss.png", link: "https://www.instagram.com/fossclub_set/" },
-    { name: "The Cloud Club", image: "/Images/Cloud.png", link: "https://www.instagram.com/thecloudclub__/" },
-    { name: "Zigbee", image: "/Images/Zigbee.png", link: "https://www.instagram.com/zigbee_ju/" },
+    { name: "Turing Club", image: "/Images/Turing.png" },
+    { name: "FOSS", image: "/Images/Foss.png" },
+    { name: "Cloud Computing", image: "/Images/Cloud.png" },
+    { name: "Zigbee", image: "/Images/Zigbee.png" },
   ];
 
   // 🔹 Gallery Images List (Slideshow)
@@ -46,9 +38,7 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-8">
-        Welcome {user ? user.name.charAt(0).toUpperCase() + user.name.slice(1).toLowerCase() : 'Guest'} !
-      </h1>
+      <h1 className="text-2xl font-semibold text-gray-800 mb-8">Welcome User</h1>
 
       {/* 🔹 Main Section with 3 Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -56,7 +46,7 @@ export default function Home() {
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-gray-800">Registered Event</h2>
           <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-            <p className="text-gray-500">You Havenot Registered Yet</p>
+            <p className="text-gray-500">You Haven't Registered Yet</p>
           </div>
         </div>
 
@@ -66,13 +56,11 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-4">
             {popularClubs.map((club) => (
               <div key={club.name} className="bg-white rounded-lg p-4 text-center shadow-sm">
-                <a href={club.link} target="_blank" rel="noopener noreferrer">
-                  <img
-                    src={club.image}
-                    alt={club.name}
-                    className="w-16 h-16 rounded-full mx-auto mb-2 hover:opacity-80 transition-opacity"
-                  />
-                </a>
+                <img
+                  src={club.image}
+                  alt={club.name}
+                  className="w-16 h-16 rounded-full mx-auto mb-2"
+                />
                 <h3 className="font-medium">{club.name}</h3>
               </div>
             ))}
@@ -98,13 +86,11 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {followingClubs.map((club) => (
             <div key={club.name} className="bg-white rounded-lg p-6 text-center shadow-sm">
-              <a href={club.link} target="_blank" rel="noopener noreferrer">
-                <img
-                  src={club.image}
-                  alt={club.name}
-                  className="w-20 h-20 rounded-full mx-auto mb-3 hover:opacity-80 transition-opacity"
-                />
-              </a>
+              <img
+                src={club.image}
+                alt={club.name}
+                className="w-20 h-20 rounded-full mx-auto mb-3"
+              />
               <h3 className="font-medium">{club.name}</h3>
             </div>
           ))}
