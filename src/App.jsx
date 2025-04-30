@@ -6,7 +6,7 @@ import Explore from './pages/Explore';
 
 function App() {
   return (
-    <div className="min-h-screen bg-[#f3f4f9]">
+    <div className="min-h-screen bg-[#b5d4e8]">
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

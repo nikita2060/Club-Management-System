@@ -17,8 +17,18 @@ export default function Explore() {
     { name: 'Zigbee', image: '/Images/Zigbee.png',link: "https://www.instagram.com/zigbee_ju/" },
   ];
 
-  // 🔹 List of Upcoming Events (Including Infinity Event & Technical Hackathon)
-  const upcomingEvents = [
+   // 🔹 Updated Upcoming Events (Inceptix Hackathon with updated date)
+   const upcomingEvents = [
+    { 
+      name: 'Inceptrix Hackathon', 
+      date: '8 and 9 May, 2025', 
+      description: 'An exciting two-day hackathon focused on real-world problem solving.', 
+      image: '/Images/inceptrix.jpeg' 
+    }
+  ];
+
+  // 🔹 Past Events
+  const pastEvents = [
     { 
       name: 'Infinity Event', 
       date: 'March 20, 2025', 
@@ -26,10 +36,16 @@ export default function Explore() {
       image: '/Images/infinity.jpeg' 
     },
     { 
-      name: 'Technical Hackathon', 
-      date: 'April 5, 2025', 
-      description: 'A 24-hour coding challenge for tech enthusiasts.', 
-      image: '/Images/hackathon.jpeg' 
+      name: 'Race for Roles', 
+      date: '15 April 2025', 
+      description: 'A competitive event to prepare students for placement roles.', 
+      image: '/Images/race-for-roles.jpeg' 
+    },
+    {
+      name: 'Tag X 2025',
+      date: '15 and 16 April 2025',
+      description: 'A dynamic cultural and technical event filled with excitement and opportunities.',
+      image: '/Images/tagx2025.jpeg'
     },
   ];
 
@@ -49,18 +65,20 @@ export default function Explore() {
 
       {/* 🔹 Upcoming Events Section */}
       <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Upcoming Events</h2>
+        <h2 className="text-xl font-semibold mb-4">Upcoming / Ongoing Events</h2>
         {upcomingEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {upcomingEvents.map((event) => (
               <div key={event.name} className="bg-white rounded-lg p-6 shadow-md">
                 <img src={event.image} alt={event.name} className="w-full h-40 object-cover rounded-md mb-4" />
                 <h3 className="text-lg font-bold">{event.name}</h3>
-                <p className="text-gray-500">{event.date}</p>
-                <p className="mt-2 text-gray-700">{event.description}</p>
+              <p className="text-gray-500">{event.date}</p>
+              <p className="mt-2 text-gray-700">{event.description}</p>
+              <a href="https://inceptrix2025.xyz/" className="inline-block">
                 <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
                   Register Now
                 </button>
+              </a>
               </div>
             ))}
           </div>
@@ -86,20 +104,22 @@ export default function Explore() {
             </a>
             <h3 className="font-medium">{club.name}</h3>
           </div>
-        ))}
-      </div>
+          ))}
+        </div>
       </section>
 
-      {/* Ongoing Events Section */}
+      {/* 🔹 Past Events Section */}
       <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Ongoing Events</h2>
+        <h2 className="text-xl font-semibold mb-4">Past Events</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-lg p-6 shadow-md">
-            <img src="/Images/ctf-event.png" alt="Capture the Flag" className="w-full h-40 object-cover rounded-md mb-4" />
-            <h3 className="text-lg font-bold">Capture the Flag</h3>
-            <p className="text-gray-500">Ongoing in Seminar Hall from 9:00 am to 3:00 pm, SET, Kanakpura</p>
-            <p className="mt-2 text-gray-700">Organized by Cloud Club of Jain University</p>
-          </div>
+          {pastEvents.map((event) => (
+            <div key={event.name} className="bg-white rounded-lg p-6 shadow-md">
+              <img src={event.image} alt={event.name} className="w-full h-40 object-cover rounded-md mb-4" />
+              <h3 className="text-lg font-bold">{event.name}</h3>
+              <p className="text-gray-500">{event.date}</p>
+              <p className="mt-2 text-gray-700">{event.description}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -108,16 +128,16 @@ export default function Explore() {
         <h2 className="text-xl font-semibold mb-4">In Your Organization</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {organizationClubs.map((club) => (
-           <div key={club.name} className="bg-white rounded-lg p-6 text-center shadow-sm">
-              <a href={club.link} target="_blank" rel="noopener noreferrer">
-                <img
-                  src={club.image}
-                  alt={club.name}
-                  className="w-20 h-20 rounded-full mx-auto mb-3 hover:opacity-80 transition-opacity"
-                />
-              </a>
-              <h3 className="font-medium">{club.name}</h3>
-            </div>
+            <div key={club.name} className="bg-white rounded-lg p-4 text-center shadow-sm">
+            <a href={club.link} target="_blank" rel="noopener noreferrer">
+              <img
+                src={club.image}
+                alt={club.name}
+                className="w-16 h-16 rounded-full mx-auto mb-2 hover:opacity-80 transition-opacity"
+              />
+            </a>
+            <h3 className="font-medium">{club.name}</h3>
+          </div>
           ))}
         </div>
       </section>

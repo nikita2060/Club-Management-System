@@ -27,10 +27,14 @@ export default function Home() {
 
   // 🔹 Gallery Images List (Slideshow)
   const galleryImages = [
-    "/Images/gallery_music.jpeg",
-    "/Images/gallery_nsb.jpeg",
+    "/Images/gallery1.jpeg",
+    "/Images/gallery2.jpeg",
     "/Images/gallery3.jpeg",
-    "/Images/gallery4.jpeg",
+    "/Images/gallery5.jpeg",
+    "/Images/gallery6.jpeg",
+    "/Images/gallery7.jpeg",
+    "/Images/gallery8.jpeg",
+    "/Images/gallery9.jpeg",
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -54,9 +58,21 @@ export default function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Registered Event */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-800">Registered Event</h2>
-          <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-            <p className="text-gray-500">You Havenot Registered Yet</p>
+          <h2 className="text-xl font-semibold text-gray-800">Upcoming Event / Ongoing Events</h2>
+          <div className="bg-white rounded-lg p-8 shadow-sm">
+            <img 
+              src="/Images/inceptrix.jpeg" 
+              alt="Inceptrix Hackathon" 
+              className="w-full h-40 object-cover rounded-md mb-4"
+            />
+            <h3 className="text-lg font-bold">Inceptrix Hackathon</h3>
+            <p className="text-gray-500">8 and 9 May, 2025</p>
+            <p className="mt-2 text-gray-700">An exciting two-day hackathon focused on real-world problem solving.</p>
+            <a href="https://inceptrix2025.xyz/" className="inline-block">
+              <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                Register Now
+              </button>
+            </a>
           </div>
         </div>
 
@@ -82,12 +98,16 @@ export default function Home() {
         {/* 🔹 Gallery (Auto-Slideshow) */}
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-gray-800">Gallery</h2>
-          <div className="bg-white rounded-lg shadow-sm h-[300px] flex items-center justify-center overflow-hidden">
-            <img
-              src={galleryImages[currentImageIndex]}
-              alt="Gallery Image"
-              className="w-full h-full object-cover rounded-lg transition-opacity duration-500"
-            />
+          <div className="bg-white rounded-lg shadow-sm h-[300px] relative">
+            <div className="gallery-container">
+              <img
+                key={currentImageIndex}
+                src={galleryImages[currentImageIndex]}
+                alt={`Gallery Image ${currentImageIndex + 1}`}
+                className="gallery-image"
+                style={{ animation: 'slideAndFade 3s ease-in-out' }}
+              />
+            </div>
           </div>
         </div>
       </div>
