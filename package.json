@@ -30,5 +30,17 @@
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "vite": "^6.1.0"
-  }
+  },
+  "description": "Club Management System - A web application for managing clubs, organizations, and events. Users can register, explore clubs, and participate in events. Built with React, React Router, and Tailwind CSS.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikita2060/Club-Management-System.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nikita2060/Club-Management-System/issues"
+  },
+  "homepage": "https://github.com/nikita2060/Club-Management-System#readme"
 }

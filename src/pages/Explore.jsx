@@ -3,18 +3,18 @@ import { FiSearch } from 'react-icons/fi';
 export default function Explore() {
   // 🔹 List of Popular Clubs
   const popularClubs = [
-    { name: 'Enigma', image: '/Images/Enigma Logo (NO BG).png' },
-    { name: 'Cultural', image: '/Images/Cultural.png' },
-    { name: 'Neuron', image: '/Images/Neuron.png' },
-    { name: 'Cypher', image: '/Images/Cypher.png' },
+    { name: 'Enigma', image: '/Images/Enigma Logo (NO BG).png', link: "https://enigma-club.vercel.app/?fbclid=PAZXh0bgNhZW0CMTEAAae6qXXF3I0ve_KuERfh8WPrpVBOAIFMtT9nLJ5ippGh6kI25NaO826AcYGxWA_aem_jeFxpIhteXuLRKwVP0XvxQ" },
+    { name: 'Tech Council', image: '/Images/Tech Council.png',link: "https://linktr.ee/TechCouncilSCSE?fbclid=PAZXh0bgNhZW0CMTEAAaetXUSD2sV_-FRZYxU1Rm0fKWjBY-_tPP8cOtg-YWb_P5NqDbjjFrQGbN4H7A_aem_UEAyUIQE9nLKvqWn5_YBFg" },
+    { name: 'Neuron', image: '/Images/Neuron.png',link: "https://www.instagram.com/neuron.ai_club/" },
+    { name: 'Cypher', image: '/Images/Cypher.png',link: "https://www.instagram.com/cypher_shield/" },
   ];
 
   // 🔹 List of Organization Clubs
   const organizationClubs = [
-    { name: 'Turing Club', image: '/Images/Turing.png' },
-    { name: 'FOSS', image: '/Images/Foss.png' },
-    { name: 'Cloud Computing', image: '/Images/Cloud.png' },
-    { name: 'Zigbee', image: '/Images/Zigbee.png' },
+    { name: 'Turing Club', image: '/Images/Turing.png',link: "https://www.instagram.com/turingclubfetju/" },
+    { name: 'FOSS', image: '/Images/Foss.png',link: "https://www.instagram.com/fossclub_set/" },
+    { name: 'The Cloud Club', image: '/Images/Cloud.png',link: "https://www.instagram.com/thecloudclub__/" },
+    { name: 'Zigbee', image: '/Images/Zigbee.png',link: "https://www.instagram.com/zigbee_ju/" },
   ];
 
   // 🔹 List of Upcoming Events (Including Infinity Event & Technical Hackathon)
@@ -76,12 +76,18 @@ export default function Explore() {
         <h2 className="text-xl font-semibold mb-4">Popular Clubs</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {popularClubs.map((club) => (
-            <div key={club.name} className="bg-white rounded-lg p-4 text-center">
-              <img src={club.image} alt={club.name} className="w-24 h-24 rounded-full mx-auto mb-2 object-cover" />
-              <h3 className="font-medium">{club.name}</h3>
-            </div>
-          ))}
-        </div>
+            <div key={club.name} className="bg-white rounded-lg p-4 text-center shadow-sm">
+            <a href={club.link} target="_blank" rel="noopener noreferrer">
+              <img
+                src={club.image}
+                alt={club.name}
+                className="w-16 h-16 rounded-full mx-auto mb-2 hover:opacity-80 transition-opacity"
+              />
+            </a>
+            <h3 className="font-medium">{club.name}</h3>
+          </div>
+        ))}
+      </div>
       </section>
 
       {/* Ongoing Events Section */}
@@ -102,8 +108,14 @@ export default function Explore() {
         <h2 className="text-xl font-semibold mb-4">In Your Organization</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {organizationClubs.map((club) => (
-            <div key={club.name} className="bg-white rounded-lg p-4 text-center">
-              <img src={club.image} alt={club.name} className="w-16 h-16 rounded-full mx-auto mb-2" />
+           <div key={club.name} className="bg-white rounded-lg p-6 text-center shadow-sm">
+              <a href={club.link} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={club.image}
+                  alt={club.name}
+                  className="w-20 h-20 rounded-full mx-auto mb-3 hover:opacity-80 transition-opacity"
+                />
+              </a>
               <h3 className="font-medium">{club.name}</h3>
             </div>
           ))}
