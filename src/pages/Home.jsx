@@ -48,9 +48,21 @@ export default function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Registered Event */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-800">Registered Event</h2>
-          <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-            <p className="text-gray-500">You Haven't Registered Yet</p>
+          <h2 className="text-xl font-semibold text-gray-800">Upcoming Event / Ongoing Events</h2>
+          <div className="bg-white rounded-lg p-8 shadow-sm">
+            <img 
+              src="/Images/inceptrix.jpeg" 
+              alt="Inceptrix Hackathon" 
+              className="w-full h-40 object-cover rounded-md mb-4"
+            />
+            <h3 className="text-lg font-bold">Inceptrix Hackathon</h3>
+            <p className="text-gray-500">8 and 9 May, 2025</p>
+            <p className="mt-2 text-gray-700">An exciting two-day hackathon focused on real-world problem solving.</p>
+            <a href="https://inceptrix2025.xyz/" className="inline-block">
+              <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                Register Now
+              </button>
+            </a>
           </div>
         </div>
 

@@ -65,18 +65,20 @@ export default function Explore() {
 
       {/* 🔹 Upcoming Events Section */}
       <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Upcoming Events</h2>
+        <h2 className="text-xl font-semibold mb-4">Upcoming / Ongoing Events</h2>
         {upcomingEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {upcomingEvents.map((event) => (
               <div key={event.name} className="bg-white rounded-lg p-6 shadow-md">
                 <img src={event.image} alt={event.name} className="w-full h-40 object-cover rounded-md mb-4" />
                 <h3 className="text-lg font-bold">{event.name}</h3>
-                <p className="text-gray-500">{event.date}</p>
-                <p className="mt-2 text-gray-700">{event.description}</p>
+              <p className="text-gray-500">{event.date}</p>
+              <p className="mt-2 text-gray-700">{event.description}</p>
+              <a href="https://inceptrix2025.xyz/" className="inline-block">
                 <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
                   Register Now
                 </button>
+              </a>
               </div>
             ))}
           </div>
