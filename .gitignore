@@ -3,7 +3,7 @@ node_modules/
 package-lock.json
 pnpm-debug.log*
 lerna-debug.log*
-
+gi
 # Environment variables
 .env
 
