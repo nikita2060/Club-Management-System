@@ -4,6 +4,7 @@ package-lock.json
 pnpm-debug.log*
 lerna-debug.log*
 gi
+
 # Environment variables
 .env
 
@@ -24,6 +25,7 @@ out/
 .vscode/
 !.vscode/extensions.json
 .idea/
+*.swp
 
 # OS-specific files
 .DS_Store
@@ -35,3 +37,6 @@ Thumbs.db
 
 # Git-related
 .git/
+
+# Debugging
+*.bak
