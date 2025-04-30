@@ -88,12 +88,16 @@ export default function Home() {
         {/* 🔹 Gallery (Auto-Slideshow) */}
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-gray-800">Gallery</h2>
-          <div className="bg-white rounded-lg shadow-sm h-[300px] flex items-center justify-center overflow-hidden">
-            <img
-              src={galleryImages[currentImageIndex]}
-              alt="Gallery Image"
-              className="w-full h-full object-cover rounded-lg transition-opacity duration-500"
-            />
+          <div className="bg-white rounded-lg shadow-sm h-[300px] relative">
+            <div className="gallery-container">
+              <img
+                key={currentImageIndex}
+                src={galleryImages[currentImageIndex]}
+                alt={`Gallery Image ${currentImageIndex + 1}`}
+                className="gallery-image"
+                style={{ animation: 'slideAndFade 3s ease-in-out' }}
+              />
+            </div>
           </div>
         </div>
       </div>

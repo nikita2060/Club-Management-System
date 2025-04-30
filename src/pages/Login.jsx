@@ -69,23 +69,29 @@ export default function Login()
 
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-[#f3f4f9] flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="flex">
+    <div className="min-h-[calc(100vh-64px)] bg-[#b5d4e8] flex items-center justify-center p-4">
+      <div className="w-full max-w-4xl bg-[#b5d4e8] rounded-3xl shadow-[0_0_30px_rgba(0,0,0,0.3)] hover:shadow-[0_0_40px_rgba(0,0,0,0.4)] hover:scale-[1.02] transition-all duration-300 ease-in-out relative overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30 z-0"
+          style={{ backgroundImage: 'url("/Images/Login Page Background.jpg")' }}
+        ></div>
+        
+        <div className="flex rounded-3xl overflow-hidden relative z-10">
           {/* Left Side - Navigation */}
-          <div className="w-1/3 bg-[#f3f4f9] p-8 space-y-6">
-            <h2 className="text-2xl font-bold mb-8">Welcome</h2>
-            <nav className="space-y-4">
-              <Link to="/register/user" className={`block w-full text-left py-2 hover:text-primary transition-colors ${isRegisterUser ? 'text-primary font-semibold' : ''}`}>
+          <div className="w-1/3 bg-[#b5d4e8] p-8 space-y-6 rounded-l-3xl">
+            <h2 className="text-2xl font-bold mb-8 text-gray-800">Welcome</h2>
+            <nav className="space-y-4 bg-[#b5d4e8] p-4 rounded-xl shadow-[inset_0_4px_8px_rgba(0,0,0,0.2)]">
+              <Link to="/register/user" className={`block w-full text-left py-2 px-4 rounded-lg hover:bg-[#a3c6e0] hover:shadow-lg transition-all ${isRegisterUser ? 'bg-[#a3c6e0] shadow-lg text-primary font-semibold' : 'text-gray-700'}`}>
                 Register As User
               </Link>
-              <Link to="/register/club" className={`block w-full text-left py-2 hover:text-primary transition-colors ${isRegisterClub ? 'text-primary font-semibold' : ''}`}>
+              <Link to="/register/club" className={`block w-full text-left py-2 px-4 rounded-lg hover:bg-[#a3c6e0] hover:shadow-lg transition-all ${isRegisterClub ? 'bg-[#a3c6e0] shadow-lg text-primary font-semibold' : 'text-gray-700'}`}>
                 Register As Club
               </Link>
-              <Link to="/register/organization" className={`block w-full text-left py-2 hover:text-primary transition-colors ${isRegisterOrg ? 'text-primary font-semibold' : ''}`}>
+              <Link to="/register/organization" className={`block w-full text-left py-2 px-4 rounded-lg hover:bg-[#a3c6e0] hover:shadow-lg transition-all ${isRegisterOrg ? 'bg-[#a3c6e0] shadow-lg text-primary font-semibold' : 'text-gray-700'}`}>
                 Register As Organization
               </Link>
-              <Link to="/login" className={`block w-full text-left py-2 hover:text-primary transition-colors ${isLogin ? 'text-primary font-semibold' : ''}`}>
+              <Link to="/login" className={`block w-full text-left py-2 px-4 rounded-lg hover:bg-[#a3c6e0] hover:shadow-lg transition-all ${isLogin ? 'bg-[#a3c6e0] shadow-lg text-primary font-semibold' : 'text-gray-700'}`}>
                 Login
               </Link>
             </nav>
@@ -106,19 +112,19 @@ export default function Login()
               {/* Input Fields */}
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-                <input type="text" id="name" value={formData.name} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary" required />
+                <input type="text" id="name" value={formData.name} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 focus:border-primary focus:ring-primary" required />
               </div>
 
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email" id="email" value={formData.email} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary" required />
+                <input type="email" id="email" value={formData.email} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 focus:border-primary focus:ring-primary" required />
               </div>
 
               {/* Show USN field only for User Registration */}
               {!isRegisterClub && !isRegisterOrg && (
                 <div>
                   <label htmlFor="usn" className="block text-sm font-medium text-gray-700">USN (Optional)</label>
-                  <input type="text" id="usn" value={formData.usn} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary" />
+                  <input type="text" id="usn" value={formData.usn} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 focus:border-primary focus:ring-primary" />
                 </div>
               )}
 
@@ -126,13 +132,13 @@ export default function Login()
               {(isRegisterClub || isRegisterOrg) && (
                 <div>
                   <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-                  <textarea id="description" value={formData.description} onChange={handleChange} rows="3" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"></textarea>
+                  <textarea id="description" value={formData.description} onChange={handleChange} rows="3" className="mt-1 block w-full rounded-md border-gray-300 focus:border-primary focus:ring-primary"></textarea>
                 </div>
               )}
 
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" id="password" value={formData.password} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary" required />
+                <input type="password" id="password" value={formData.password} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 focus:border-primary focus:ring-primary" required />
               </div>
 
               {/* Submit Button */}
