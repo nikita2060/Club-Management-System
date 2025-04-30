@@ -65,7 +65,7 @@ export default function Explore() {
 
       {/* 🔹 Upcoming Events Section */}
       <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Upcoming Events</h2>
+        <h2 className="text-xl font-semibold mb-4">Upcoming / Ongoing Events</h2>
         {upcomingEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {upcomingEvents.map((event) => (
