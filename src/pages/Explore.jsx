@@ -94,14 +94,14 @@ export default function Explore() {
           <input
             type="text"
             placeholder="Search clubs, events, or organizations..."
-            className="flex-1 py-4 px-4 rounded-xl bg-white border border-neutral-200 text-neutral-700 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all shadow-sm"
+            className="flex-grow py-4 px-4 rounded-xl bg-white border border-neutral-200 text-neutral-700 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all duration-100 shadow-sm"
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <div className="relative">
+          <div className="relative w-44">
             <button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="h-full px-6 rounded-xl bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all shadow-sm flex items-center gap-2"
+              className="w-full h-full px-6 rounded-xl bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all  shadow-sm flex items-center justify-between"
             >
               {selectedCategory === 'all' ? 'All Categories' : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
               <FiChevronDown className={`transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
