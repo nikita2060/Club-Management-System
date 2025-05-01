@@ -1,146 +1,233 @@
-import { FiSearch } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { FiSearch, FiFilter, FiStar, FiUsers, FiCalendar, FiExternalLink, FiInstagram } from 'react-icons/fi';
 
 export default function Explore() {
-  // 🔹 List of Popular Clubs
-  const popularClubs = [
-    { name: 'Enigma', image: '/Images/Enigma Logo (NO BG).png', link: "https://enigma-club.vercel.app/?fbclid=PAZXh0bgNhZW0CMTEAAae6qXXF3I0ve_KuERfh8WPrpVBOAIFMtT9nLJ5ippGh6kI25NaO826AcYGxWA_aem_jeFxpIhteXuLRKwVP0XvxQ" },
-    { name: 'Tech Council', image: '/Images/Tech Council.png',link: "https://linktr.ee/TechCouncilSCSE?fbclid=PAZXh0bgNhZW0CMTEAAaetXUSD2sV_-FRZYxU1Rm0fKWjBY-_tPP8cOtg-YWb_P5NqDbjjFrQGbN4H7A_aem_UEAyUIQE9nLKvqWn5_YBFg" },
-    { name: 'Neuron', image: '/Images/Neuron.png',link: "https://www.instagram.com/neuron.ai_club/" },
-    { name: 'Cypher', image: '/Images/Cypher.png',link: "https://www.instagram.com/cypher_shield/" },
-  ];
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState('clubs');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // 🔹 List of Organization Clubs
-  const organizationClubs = [
-    { name: 'Turing Club', image: '/Images/Turing.png',link: "https://www.instagram.com/turingclubfetju/" },
-    { name: 'FOSS', image: '/Images/Foss.png',link: "https://www.instagram.com/fossclub_set/" },
-    { name: 'The Cloud Club', image: '/Images/Cloud.png',link: "https://www.instagram.com/thecloudclub__/" },
-    { name: 'Zigbee', image: '/Images/Zigbee.png',link: "https://www.instagram.com/zigbee_ju/" },
-  ];
-
-   // 🔹 Updated Upcoming Events (Inceptix Hackathon with updated date)
-   const upcomingEvents = [
-    { 
-      name: 'Inceptrix Hackathon', 
-      date: '8 and 9 May, 2025', 
-      description: 'An exciting two-day hackathon focused on real-world problem solving.', 
-      image: '/Images/inceptrix.jpeg' 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tabParam = params.get('tab');
+    if (tabParam && ['clubs', 'events', 'featured'].includes(tabParam)) {
+      setActiveTab(tabParam);
     }
+  }, [location]);
+
+  const clubs = [
+    { id: 1, name: "Enigma", image: "/Images/Enigma Logo (NO BG).png", category: "Tech", members: 120, link: "https://enigma-club.vercel.app/" },
+    { id: 2, name: "Tech Council", image: "/Images/Tech Council.png", category: "Tech", members: 85, link: "https://linktr.ee/TechCouncilSCSE" },
+    { id: 3, name: "Neuron", image: "/Images/Neuron.png", category: "AI", members: 65, link: "https://www.instagram.com/neuron.ai_club/" },
+    { id: 4, name: "Cypher", image: "/Images/Cypher.png", category: "Cybersecurity", members: 50, link: "https://www.instagram.com/cypher_shield/" },
+    { id: 5, name: "Turing Club", image: "/Images/Turing.png", category: "Programming", members: 75, link: "https://www.instagram.com/turingclubfetju/" },
+    { id: 6, name: "FOSS", image: "/Images/Foss.png", category: "Open Source", members: 60, link: "https://www.instagram.com/fossclub_set/" },
+    { id: 7, name: "The Cloud Club", image: "/Images/Cloud.png", category: "Cloud Computing", members: 45, link: "https://www.instagram.com/thecloudclub__/" },
+    { id: 8, name: "Zigbee", image: "/Images/Zigbee.png", category: "IoT", members: 55, link: "https://www.instagram.com/zigbee_ju/" },
   ];
 
-  // 🔹 Past Events
-  const pastEvents = [
-    { 
-      name: 'Infinity Event', 
-      date: 'March 20, 2025', 
-      description: 'A grand celebration of innovation and creativity.', 
-      image: '/Images/infinity.jpeg' 
-    },
-    { 
-      name: 'Race for Roles', 
-      date: '15 April 2025', 
-      description: 'A competitive event to prepare students for placement roles.', 
-      image: '/Images/race-for-roles.jpeg' 
+  const events = [
+    {
+      id: 1,
+      name: "Inceptrix Hackathon",
+      image: "/Images/inceptrix.jpeg",
+      date: "May 8-9, 2025",
+      category: "Hackathon",
+      description: "A 48-hour hackathon focused on solving real-world problems with innovative technology solutions."
     },
     {
-      name: 'Tag X 2025',
-      date: '15 and 16 April 2025',
-      description: 'A dynamic cultural and technical event filled with excitement and opportunities.',
-      image: '/Images/tagx2025.jpeg'
+      id: 2,
+      name: "AI Workshop",
+      image: "/Images/gallery1.jpeg",
+      date: "June 15, 2025",
+      category: "Workshop",
+      description: "Learn the fundamentals of artificial intelligence and machine learning in this hands-on workshop."
+    },
+    {
+      id: 3,
+      name: "Cloud Summit",
+      image: "/Images/gallery2.jpeg",
+      date: "July 22, 2025",
+      category: "Conference",
+      description: "Join industry experts to explore the latest trends and technologies in cloud computing."
+    },
+    {
+      id: 4,
+      name: "Cybersecurity CTF",
+      image: "/Images/gallery3.jpeg",
+      date: "August 5, 2025",
+      category: "Competition",
+      description: "Test your cybersecurity skills in this exciting Capture The Flag competition."
     },
   ];
 
+  const filteredClubs = clubs.filter(club =>
+    club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    club.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredEvents = events.filter(event =>
+    event.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleJoinClick = (link) => {
+    window.open(link, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
-    <main className="max-w-7xl mx-auto px-4 py-8">
-      {/* 🔹 Search Section */}
-      <div className="mb-12">
-        <div className="max-w-2xl mx-auto relative">
-          <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl" />
+    <div className="max-w-7xl mx-auto px-6 py-12">
+      {/* Search and Filter */}
+      <div className="mb-10">
+        <div className="relative mb-6">
           <input
             type="text"
-            placeholder="Search clubs, events, or organizations"
-            className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            placeholder="Search clubs, events, or organizations..."
+            className="w-full py-4 pl-12 pr-4 rounded-xl bg-white border border-neutral-200 text-neutral-700 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all shadow-sm"
+            value={searchTerm}
+            onChange={handleSearchChange}
           />
+          <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-neutral-400 text-xl" />
+          <button className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-2 text-neutral-500 hover:text-primary-500 transition-colors">
+            <FiFilter />
+            <span>Filter</span>
+          </button>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex space-x-2 mb-8">
+          <button
+            onClick={() => setActiveTab('clubs')}
+            className={`px-6 py-3 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-sm ${activeTab === 'clubs' ? 'bg-gradient-to-r from-primary-400 to-primary-500 text-white shadow-lg shadow-primary-200/30' : 'bg-white text-neutral-600 hover:bg-neutral-50 border border-neutral-200'}`}
+          >
+            <FiUsers className={activeTab === 'clubs' ? 'animate-pulse' : ''} />
+            <span>Clubs</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('events')}
+            className={`px-6 py-3 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-sm ${activeTab === 'events' ? 'bg-gradient-to-r from-secondary-400 to-secondary-500 text-white shadow-lg shadow-secondary-200/30' : 'bg-white text-neutral-600 hover:bg-neutral-50 border border-neutral-200'}`}
+          >
+            <FiCalendar className={activeTab === 'events' ? 'animate-pulse' : ''} />
+            <span>Events</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('featured')}
+            className={`px-6 py-3 rounded-lg flex items-center space-x-2 transition-all duration-300 shadow-sm ${activeTab === 'featured' ? 'bg-gradient-to-r from-accent-400 to-accent-500 text-white shadow-lg shadow-accent-200/30' : 'bg-white text-neutral-600 hover:bg-neutral-50 border border-neutral-200'}`}
+          >
+            <FiStar className={activeTab === 'featured' ? 'animate-pulse' : ''} />
+            <span>Featured</span>
+          </button>
         </div>
       </div>
 
-      {/* 🔹 Upcoming Events Section */}
-      <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Upcoming / Ongoing Events</h2>
-        {upcomingEvents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {upcomingEvents.map((event) => (
-              <div key={event.name} className="bg-white rounded-lg p-6 shadow-md">
-                <img src={event.image} alt={event.name} className="w-full h-40 object-cover rounded-md mb-4" />
-                <h3 className="text-lg font-bold">{event.name}</h3>
-              <p className="text-gray-500">{event.date}</p>
-              <p className="mt-2 text-gray-700">{event.description}</p>
-              <a href="https://inceptrix2025.xyz/" className="inline-block">
-                <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                  Register Now
-                </button>
-              </a>
+      {/* Content */}
+      <div>
+        {activeTab === 'clubs' && (
+          <>
+            {filteredClubs.length === 0 ? (
+              <div className="text-center py-12">
+                <h3 className="text-xl font-semibold text-neutral-600">No clubs found matching "{searchTerm}"</h3>
+                <p className="text-neutral-500 mt-2">Try a different search term or browse all clubs</p>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="bg-white rounded-lg p-8 text-center text-gray-500">
-            No Upcoming Events
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredClubs.map(club => (
+                  <div key={club.id} className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer p-4 border border-neutral-200">
+                    <div className="h-52 overflow-hidden relative rounded-lg mb-4">
+                      <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/70 to-transparent opacity-60 z-10"></div>
+                      <img
+                        src={club.image}
+                        alt={club.name}
+                        className="w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute bottom-0 left-0 w-full p-4 z-20">
+                        <span className="inline-block px-3 py-1 bg-primary-500/90 text-white text-xs rounded-full mb-2 shadow-sm">
+                          {club.category}
+                        </span>
+                        <h3 className="text-xl font-bold text-white">{club.name}</h3>
+                      </div>
+                    </div>
+                    <div className="p-4 bg-neutral-50 rounded-lg">
+                      <div className="flex justify-between items-center">
+                        <span className="text-neutral-600 flex items-center space-x-1">
+                          <FiUsers className="text-primary-500 mr-2" />
+                          <span>{club.members} members</span>
+                        </span>
+                        <button
+                          onClick={() => handleJoinClick(club.link)}
+                          className="px-4 py-2 bg-white text-primary-500 rounded-lg border border-primary-200 hover:bg-primary-500 hover:text-white transition-all duration-300 flex items-center space-x-1 shadow-sm"
+                        >
+                          <span>Join</span>
+                          {club.link.includes('instagram') ? <FiInstagram className="ml-1" /> : <FiExternalLink className="ml-1" />}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {activeTab === 'events' && (
+          <>
+            {filteredEvents.length === 0 ? (
+              <div className="text-center py-12">
+                <h3 className="text-xl font-semibold text-neutral-600">No events found matching "{searchTerm}"</h3>
+                <p className="text-neutral-500 mt-2">Try a different search term or browse all events</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {filteredEvents.map(event => (
+                  <div key={event.id} className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border border-neutral-200">
+                    <div className="flex flex-col md:flex-row h-full">
+                      <div className="md:w-2/5 h-60 md:h-auto overflow-hidden relative">
+                        <img
+                          src={event.image}
+                          alt={event.name}
+                          className="w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute top-4 left-4">
+                          <span className="inline-block px-3 py-1 bg-secondary-500/90 text-white text-xs rounded-full shadow-sm">
+                            {event.category}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="md:w-3/5 p-6 flex flex-col justify-between bg-white">
+                        <div>
+                          <h3 className="text-2xl font-bold text-neutral-800 mb-2">{event.name}</h3>
+                          <p className="text-neutral-600 mb-4 flex items-center">
+                            <FiCalendar className="text-secondary-500 mr-2" />
+                            <span>{event.date}</span>
+                          </p>
+                          <p className="text-neutral-500 mb-6 line-clamp-3">{event.description}</p>
+                        </div>
+                        <button className="self-start px-5 py-2.5 bg-gradient-to-r from-primary-400 to-secondary-500 text-white rounded-lg hover:from-primary-500 hover:to-secondary-600 transition-all duration-300 transform group-hover:scale-105 shadow-md">
+                          Register Now
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {activeTab === 'featured' && (
+          <div className="bg-white rounded-xl p-8 shadow-md border border-neutral-200">
+            <h2 className="text-2xl font-bold text-neutral-800 mb-6">Featured Content</h2>
+            <p className="text-neutral-600">Featured content will be displayed here.</p>
           </div>
         )}
-      </section>
-
-      {/* 🔹 Popular Clubs Section */}
-      <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Popular Clubs</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {popularClubs.map((club) => (
-            <div key={club.name} className="bg-white rounded-lg p-4 text-center shadow-sm">
-            <a href={club.link} target="_blank" rel="noopener noreferrer">
-              <img
-                src={club.image}
-                alt={club.name}
-                className="w-16 h-16 rounded-full mx-auto mb-2 hover:opacity-80 transition-opacity"
-              />
-            </a>
-            <h3 className="font-medium">{club.name}</h3>
-          </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 🔹 Past Events Section */}
-      <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">Past Events</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {pastEvents.map((event) => (
-            <div key={event.name} className="bg-white rounded-lg p-6 shadow-md">
-              <img src={event.image} alt={event.name} className="w-full h-40 object-cover rounded-md mb-4" />
-              <h3 className="text-lg font-bold">{event.name}</h3>
-              <p className="text-gray-500">{event.date}</p>
-              <p className="mt-2 text-gray-700">{event.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 🔹 In Your Organization Section */}
-      <section className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">In Your Organization</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {organizationClubs.map((club) => (
-            <div key={club.name} className="bg-white rounded-lg p-4 text-center shadow-sm">
-            <a href={club.link} target="_blank" rel="noopener noreferrer">
-              <img
-                src={club.image}
-                alt={club.name}
-                className="w-16 h-16 rounded-full mx-auto mb-2 hover:opacity-80 transition-opacity"
-              />
-            </a>
-            <h3 className="font-medium">{club.name}</h3>
-          </div>
-          ))}
-        </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }

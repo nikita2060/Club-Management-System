@@ -3,22 +3,20 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Explore from './pages/Explore';
-import About from './pages/About';
 
 function App() {
   return (
-    <>
+    <div className="min-h-screen bg-[#f3f4f9]">
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/explore" element={<Explore />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/explore" element={<Explore />} />
         <Route path="/register/user" element={<Login />} />
         <Route path="/register/club" element={<Login />} />
         <Route path="/register/organization" element={<Login />} />
-        <Route path="/about" element={<About />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

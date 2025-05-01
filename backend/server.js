@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import authRoutes from './routes/auth.js';
+import authRoutes from './routes/auth.routes.js';     // Updated path
 
 // Load environment variables
 dotenv.config();
