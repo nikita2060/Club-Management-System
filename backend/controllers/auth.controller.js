@@ -1,121 +1,237 @@
-import jwt from 'jsonwebtoken';
-import User from '../models/user.model.js';
+import User from "../models/user.model.js";
+import jwt from "jsonwebtoken";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
-// Generate JWT token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d'
-  });
+const generateTokens = async (userId) => {
+  try {
+    const user = await User.findById(userId);
+    
+    const accessToken = jwt.sign(
+      { _id: user._id },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+    );
+    
+    const refreshToken = jwt.sign(
+      { _id: user._id },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
+    );
+    
+    // Save refresh token to database
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+    
+    return { accessToken, refreshToken };
+  } catch (error) {
+    throw new Error("Error generating tokens: " + error.message);
+  }
 };
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
-// @access  Public
-export const registerUser = async (req, res) => {
+export const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, password, role, usn, description } = req.body;
+  
+  // Validate required fields
+  if (!name || !email || !password) {
+    return res.status(400).json(
+      new ApiResponse(400, null, "All input is required")
+    );
+  }
+  
+  // Check if user already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.status(409).json(
+      new ApiResponse(409, null, "User already exists")
+    );
+  }
+  
+  // Create user
+  const userData = {
+    name,
+    email,
+    password,
+    role: role || "user"
+  };
+  
+  if (usn) userData.usn = usn;
+  if (description) userData.description = description;
+  
+  const user = await User.create(userData);
+  
+  // Generate tokens
+  const { accessToken, refreshToken } = await generateTokens(user._id);
+  
+  // Set cookies
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production"
+  };
+  
+  return res
+    .status(201)
+    .cookie("accessToken", accessToken, {
+      ...options,
+      maxAge: 15 * 60 * 1000 // 15 minutes
+    })
+    .cookie("refreshToken", refreshToken, {
+      ...options,
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    })
+    .json(
+      new ApiResponse(201, 
+        { user: { _id: user._id, name: user.name, email: user.email, role: user.role } }, 
+        "User registered successfully"
+      )
+    );
+});
+
+export const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  
+  if (!email || !password) {
+    return res.status(400).json(
+      new ApiResponse(400, null, "Email and password are required")
+    );
+  }
+  
+  // Find user
+  const user = await User.findOne({ email });
+  
+  if (!user) {
+    return res.status(401).json(
+      new ApiResponse(401, null, "Invalid credentials")
+    );
+  }
+  
+  // Check password
+  const isPasswordValid = await user.isPasswordCorrect(password);
+  
+  if (!isPasswordValid) {
+    return res.status(401).json(
+      new ApiResponse(401, null, "Invalid credentials")
+    );
+  }
+  
+  // Generate tokens
+  const { accessToken, refreshToken } = await generateTokens(user._id);
+  
+  // Set cookies
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production"
+  };
+  
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, {
+      ...options,
+      maxAge: 15 * 60 * 1000 // 15 minutes
+    })
+    .cookie("refreshToken", refreshToken, {
+      ...options,
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    })
+    .json(
+      new ApiResponse(200, 
+        { user: { _id: user._id, name: user.name, email: user.email, role: user.role } }, 
+        "Login successful"
+      )
+    );
+});
+
+export const logoutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        refreshToken: undefined
+      }
+    },
+    {
+      new: true
+    }
+  );
+  
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production"
+  };
+  
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User logged out successfully"));
+});
+
+export const refreshAccessToken = asyncHandler(async (req, res) => {
+  const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
+  
+  if (!incomingRefreshToken) {
+    return res.status(401).json(
+      new ApiResponse(401, null, "Unauthorized request")
+    );
+  }
+  
   try {
-    const { name, email, password, role, usn, description } = req.body;
-
-    // Check if all required fields are provided
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'All input is required' });
+    const decodedToken = jwt.verify(
+      incomingRefreshToken,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+    
+    const user = await User.findById(decodedToken._id);
+    
+    if (!user) {
+      return res.status(401).json(
+        new ApiResponse(401, null, "Invalid refresh token")
+      );
     }
-
-    // Check if user already exists
-    const userExists = await User.findOne({ email: email.toLowerCase() });
-    if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+    
+    if (incomingRefreshToken !== user.refreshToken) {
+      return res.status(401).json(
+        new ApiResponse(401, null, "Refresh token is expired or used")
+      );
     }
-
-    // Create user object with required fields
-    const userData = {
-      name,
-      email: email.toLowerCase(),
-      password,
-      role: role || 'user'
+    
+    const { accessToken, refreshToken } = await generateTokens(user._id);
+    
+    const options = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production"
     };
-
-    // Add optional fields if they exist
-    if (usn) userData.usn = usn;
-    if (description) userData.description = description;
-
-    // Create new user
-    const user = await User.create(userData);
-
-    if (user) {
-      // Generate token
-      const token = generateToken(user._id);
-      
-      res.status(201).json({
-        token,
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        },
-        message: 'User registered successfully'
-      });
-    } else {
-      res.status(400).json({ message: 'Invalid user data' });
-    }
-  } catch (error) {
-    console.error('Register error:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
-// @desc    Login user & get token
-// @route   POST /api/auth/login
-// @access  Public
-export const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // Validate input
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Please provide email and password' });
-    }
-
-    // Find user by email (case insensitive)
-    const user = await User.findOne({ email: email.toLowerCase() });
     
-    // Check if user exists and password matches
-    if (user && (await user.matchPassword(password))) {
-      // Generate token
-      const token = generateToken(user._id);
-      
-      res.json({
-        token,
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        }
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
-    }
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, {
+        ...options,
+        maxAge: 15 * 60 * 1000
+      })
+      .cookie("refreshToken", refreshToken, {
+        ...options,
+        maxAge: 7 * 24 * 60 * 60 * 1000
+      })
+      .json(
+        new ApiResponse(200, { accessToken, refreshToken }, "Access token refreshed")
+      );
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Server error' });
+    return res.status(401).json(
+      new ApiResponse(401, null, "Invalid refresh token")
+    );
   }
-};
+});
 
-// @desc    Get user profile
-// @route   GET /api/auth/profile
-// @access  Private
-export const getUserProfile = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id).select('-password');
-    
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).json({ message: 'User not found' });
-    }
-  } catch (error) {
-    console.error('Get profile error:', error);
-    res.status(500).json({ message: 'Server error' });
+export const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select("-password -refreshToken");
+  
+  if (!user) {
+    return res.status(404).json(
+      new ApiResponse(404, null, "User not found")
+    );
   }
-};
+  
+  return res.status(200).json(
+    new ApiResponse(200, user, "User profile fetched successfully")
+  );
+});
