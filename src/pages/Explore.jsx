@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { FiSearch, FiFilter, FiStar, FiUsers, FiCalendar, FiExternalLink, FiInstagram } from 'react-icons/fi';
+import { FiStar, FiUsers, FiCalendar, FiExternalLink, FiInstagram, FiChevronDown } from 'react-icons/fi';
 
 export default function Explore() {
   const location = useLocation();
@@ -61,9 +61,15 @@ export default function Explore() {
     },
   ];
 
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const categories = ['all', 'tech', 'cultural'];
+
   const filteredClubs = clubs.filter(club =>
-    club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    club.category.toLowerCase().includes(searchTerm.toLowerCase())
+    (selectedCategory === 'all' || club.category.toLowerCase() === selectedCategory) &&
+    (club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    club.category.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const filteredEvents = events.filter(event =>
@@ -84,19 +90,42 @@ export default function Explore() {
     <div className="max-w-7xl mx-auto px-6 py-12">
       {/* Search and Filter */}
       <div className="mb-10">
-        <div className="relative mb-6">
+        <div className="relative mb-6 flex gap-4">
           <input
             type="text"
             placeholder="Search clubs, events, or organizations..."
-            className="w-full py-4 pl-12 pr-4 rounded-xl bg-white border border-neutral-200 text-neutral-700 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all shadow-sm"
+            className="flex-1 py-4 px-4 rounded-xl bg-white border border-neutral-200 text-neutral-700 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all shadow-sm"
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-neutral-400 text-xl" />
-          <button className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center space-x-2 text-neutral-500 hover:text-primary-500 transition-colors">
-            <FiFilter />
-            <span>Filter</span>
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="h-full px-6 rounded-xl bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all shadow-sm flex items-center gap-2"
+            >
+              {selectedCategory === 'all' ? 'All Categories' : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
+              <FiChevronDown className={`transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {isFilterOpen && (
+              <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white shadow-lg border border-neutral-200 py-2 z-50">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setIsFilterOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2 hover:bg-neutral-50 transition-colors ${
+                      selectedCategory === category ? 'text-primary-500 bg-primary-50' : 'text-neutral-700'
+                    }`}
+                  >
+                    {category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Tabs */}
