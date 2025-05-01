@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Login() 
@@ -32,9 +32,9 @@ export default function Login()
   };
 
   // 🔹 Step 4: Handle form submission
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
       // Check if we're on the login page
       if (isLogin) {

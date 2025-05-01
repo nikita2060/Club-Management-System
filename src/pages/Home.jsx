@@ -1,12 +1,42 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import api from '../utils/api';
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  // Fetch user profile using the access token in cookies
+  // Update your fetchUserProfile function
+  const fetchUserProfile = async () => {
+    try {
+      // Make sure you're including credentials
+      const response = await api.get("/auth/profile");
+      setUser(response.data.data);
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+      navigate("/login");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:5000/api/auth/logout", {}, {
+        withCredentials: true
+      });
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   useEffect(() => {
-    // Get user data from localStorage or your auth state
-    const userData = JSON.parse(localStorage.getItem('user'));
-    setUser(userData);
+    fetchUserProfile();
   }, []);
 
   // 🔹 Popular Clubs List
@@ -48,11 +78,26 @@ export default function Home() {
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
+  if (loading) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-8">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-8">
-        Welcome {user ? user.name.charAt(0).toUpperCase() + user.name.slice(1).toLowerCase() : 'Guest'} !
-      </h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-semibold text-gray-800">
+          Welcome {user ? user.name.charAt(0).toUpperCase() + user.name.slice(1).toLowerCase() : 'Guest'} !
+        </h1>
+        
+        {user && (
+          <button 
+            onClick={handleLogout}
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition"
+          >
+            Logout
+          </button>
+        )}
+      </div>
 
       {/* 🔹 Main Section with 3 Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
