@@ -18,12 +18,12 @@ export default function Explore() {
   const clubs = [
     { id: 1, name: "Enigma", image: "/Images/Enigma Logo (NO BG).png", category: "Tech", members: 120, link: "https://enigma-club.vercel.app/" },
     { id: 2, name: "Tech Council", image: "/Images/Tech Council.png", category: "Tech", members: 85, link: "https://linktr.ee/TechCouncilSCSE" },
-    { id: 3, name: "Neuron", image: "/Images/Neuron.png", category: "AI", members: 65, link: "https://www.instagram.com/neuron.ai_club/" },
-    { id: 4, name: "Cypher", image: "/Images/Cypher.png", category: "Cybersecurity", members: 50, link: "https://www.instagram.com/cypher_shield/" },
-    { id: 5, name: "Turing Club", image: "/Images/Turing.png", category: "Programming", members: 75, link: "https://www.instagram.com/turingclubfetju/" },
-    { id: 6, name: "FOSS", image: "/Images/Foss.png", category: "Open Source", members: 60, link: "https://www.instagram.com/fossclub_set/" },
-    { id: 7, name: "The Cloud Club", image: "/Images/Cloud.png", category: "Cloud Computing", members: 45, link: "https://www.instagram.com/thecloudclub__/" },
-    { id: 8, name: "Zigbee", image: "/Images/Zigbee.png", category: "IoT", members: 55, link: "https://www.instagram.com/zigbee_ju/" },
+    { id: 3, name: "Neuron", image: "/Images/Neuron.png", category: "Tech", members: 65, link: "https://www.instagram.com/neuron.ai_club/" },
+    { id: 4, name: "Cypher", image: "/Images/Cypher.png", category: "Tech", members: 50, link: "https://www.instagram.com/cypher_shield/" },
+    { id: 5, name: "Turing Club", image: "/Images/Turing.png", category: "Tech", members: 75, link: "https://www.instagram.com/turingclubfetju/" },
+    { id: 6, name: "FOSS", image: "/Images/Foss.png", category: "Tech", members: 60, link: "https://www.instagram.com/fossclub_set/" },
+    { id: 7, name: "The Cloud Club", image: "/Images/Cloud.png", category: "Tech", members: 45, link: "https://www.instagram.com/thecloudclub__/" },
+    { id: 8, name: "Zigbee", image: "/Images/Zigbee.png", category: "Tech", members: 55, link: "https://www.instagram.com/zigbee_ju/" },
   ];
 
   const events = [

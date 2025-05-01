@@ -146,7 +146,7 @@ export default function About() {
             </div>
             <div className="md:w-1/2 rounded-xl overflow-hidden">
               <img 
-                src="/Images/our_story_img.webp" 
+                src="/Images/About Page.png" 
                 alt="ClubNect Story" 
                 className="w-full h-full object-cover"
               />

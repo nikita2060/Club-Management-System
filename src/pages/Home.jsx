@@ -71,7 +71,7 @@ export default function Home() {
           </div>
         </div>
         <div className="md:w-1/2 rounded-2xl overflow-hidden shadow-xl animate-slideIn">
-          <img src="/Images/homepage_img.webp" alt="ClubNect" className="w-full h-auto object-cover" />
+          <img src="/Images/Home Page.png" alt="ClubNect" className="w-full h-auto object-cover" />
         </div>
       </div>
 
@@ -140,7 +140,7 @@ export default function Home() {
           {/* Testimonial 1 - Puskar Rai */}
           <div className="bg-gradient-to-br from-[#6366F1]/10 to-[#8B5CF6]/10 p-6 rounded-2xl shadow-md">
             <p className="text-neutral-700 mb-4">
-              "As the President of Enigma, I've seen how ClubNect has revolutionized club management and engagement. It's an essential platform for campus connectivity."
+              "ClubNect will be a game-changer for student organizations like Enigma. It will streamline club management, enhance member engagement, and simplify communication all of which will be essential for running a successful campus club. This platform will make it easier to stay connected, organize events, and build a vibrant student community."
             </p>
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-full bg-[#6366F1]/20 flex items-center justify-center text-[#6366F1] font-bold">
@@ -148,7 +148,7 @@ export default function Home() {
               </div>
               <div>
                 <h4 className="font-semibold text-neutral-800">Puskar Rai</h4>
-                <p className="text-sm text-neutral-600">President, Enigma</p>
+                <p className="text-sm text-neutral-600">Lead, Enigma</p>
               </div>
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function Home() {
           {/* Testimonial 2 - Nikita Pandey */}
           <div className="bg-gradient-to-br from-[#8B5CF6]/10 to-[#A78BFA]/10 p-6 rounded-2xl shadow-md">
             <p className="text-neutral-700 mb-4">
-              "ClubNect has helped me stay up to date with all club activities on campus. As a third-year student, it's become an essential tool for my campus involvement."
+              "ClubNect will help me stay up to date with all club activities on campus. As a third-year student, it will become an essential tool for my campus involvement."
             </p>
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center text-[#8B5CF6] font-bold">
@@ -172,7 +172,7 @@ export default function Home() {
           {/* Testimonial 3 - First Year Student */}
           <div className="bg-gradient-to-br from-[#A78BFA]/10 to-[#C4B5FD]/10 p-6 rounded-2xl shadow-md">
             <p className="text-neutral-700 mb-4">
-              "As a first-year student, ClubNect has been invaluable in helping me explore different clubs and find my community on campus. It made my transition to college life much smoother!"
+              "As a first-year student, ClubNect will be invaluable in helping me explore different clubs and find my community on campus. It will make my transition to college life much smoother!"
             </p>
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-full bg-[#A78BFA]/20 flex items-center justify-center text-[#A78BFA] font-bold">
