@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -20,8 +20,8 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'club', 'organization', 'admin'],
-    default: 'user'
+    enum: ["user", "club", "organization", "admin"],
+    default: "user"
   },
   usn: {
     type: String,
@@ -30,19 +30,17 @@ const userSchema = new mongoose.Schema({
   description: {
     type: String
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  refreshToken: {
+    type: String
   }
-});
+}, { timestamps: true });
 
 // Hash password before saving
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
+userSchema.pre("save", async function(next) {
+  if (!this.isModified("password")) return next();
   
   try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    this.password = await bcrypt.hash(this.password, 10);
     next();
   } catch (error) {
     next(error);
@@ -50,10 +48,10 @@ userSchema.pre('save', async function(next) {
 });
 
 // Method to compare passwords
-userSchema.methods.matchPassword = async function(enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+userSchema.methods.isPasswordCorrect = async function(password) {
+  return await bcrypt.compare(password, this.password);
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;
