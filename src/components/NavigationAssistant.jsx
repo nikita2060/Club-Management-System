@@ -360,7 +360,7 @@ export default function NavigationAssistant() {
   }, [isOpen]);
 
   return (
-    <div className="fixed bottom-24 right-6 z-50">
+    <div className="fixed bottom-24 right-6 z-40">
       {isOpen && (
         <div className="absolute bottom-20 right-0 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-neutral-200 animate-fadeIn">
           <div className="bg-gradient-to-r from-primary-500 to-secondary-500 p-4">
@@ -434,7 +434,7 @@ export default function NavigationAssistant() {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 relative z-[51] ${
+        className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 relative z-[41] ${
           isOpen 
             ? "bg-red-500 rotate-90" 
             : "bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-primary-300/50 hover:shadow-xl"
