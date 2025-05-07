@@ -21,6 +21,58 @@ const eventData = [
   { name: "Cybersecurity CTF", date: "August 5, 2025", category: "Competition", description: "Capture The Flag competition on cybersecurity.", },
 ];
 
+const teamData = [
+  { 
+    name: "Pushkar Rai",
+    role: "Team Member",
+    email: "22btrcn216@jainuniversity.ac.in",
+    linkedin: "https://www.linkedin.com/in/pushkar-rai-347130354"
+  },
+  { 
+    name: "Abhishek Jha",
+    role: "Team Member",
+    email: "22btrcn011@jainuniversity.ac.in",
+    linkedin: "https://www.linkedin.com/in/theabhishekkjha/"
+  },
+  { 
+    name: "Kashish Shah",
+    role: "Team Member",
+    email: "22btrcn137@jainuniversity.ac.in",
+    linkedin: "https://www.linkedin.com/in/kashish-shah-b50421256/"
+  },
+  { 
+    name: "Nikita Pandey",
+    role: "Team Member",
+    email: "22btrcn190@jainuniversity.ac.in",
+    linkedin: "https://www.linkedin.com/in/nikitapandey-tech/"
+  }
+];
+
+const faqData = [
+  {
+    question: "How do I join a club?",
+    answer: "Simply browse our clubs section, find a club that interests you, and click the 'Join' button. You'll be directed to the club's official page or contact information to complete the joining process."
+  },
+  {
+    question: "Can I register my club on ClubNect?",
+    answer: "Absolutely! We welcome all university clubs and organizations. Register through our platform by creating an account and following the club registration process."
+  },
+  {
+    question: "How do I post an event?",
+    answer: "Club administrators can post events through their dashboard. Simply log in, navigate to the events section, and fill out the event details form."
+  },
+  {
+    question: "Is ClubNect only for Jain University?",
+    answer: "Currently, we're focused on serving Jain University students, but we have plans to expand to other universities in the future."
+  }
+];
+
+const contactInfo = {
+  email: "22btrcn216@jainuniversity.ac.in",
+  phone: "(+91) 9696724664",
+  location: "Jain (Deemed-to-be-University), Faculty of Engineering and Technology (FET)"
+};
+
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -55,7 +107,24 @@ const ChatBot = () => {
   const generateResponse = (query) => {
     const lowerQuery = query.toLowerCase();
 
-    if (lowerQuery.includes("club")) {
+    // Club-related queries
+    if (
+      lowerQuery.includes("club") ||
+      lowerQuery.includes("join") ||
+      lowerQuery.includes("organization") ||
+      lowerQuery.includes("society") ||
+      lowerQuery.includes("group") ||
+      lowerQuery.includes("community") ||
+      lowerQuery.includes("membership") ||
+      lowerQuery.includes("tech council") ||
+      lowerQuery.includes("enigma") ||
+      lowerQuery.includes("neuron") ||
+      lowerQuery.includes("cypher") ||
+      lowerQuery.includes("turing") ||
+      lowerQuery.includes("foss") ||
+      lowerQuery.includes("cloud club") ||
+      lowerQuery.includes("zigbee")
+    ) {
       const filtered = clubData.filter(
         (c) =>
           lowerQuery.includes("all") ||
@@ -70,26 +139,34 @@ const ChatBot = () => {
       return { text: `Here are the clubs I found:\n\n${list}`, sender: "bot" };
     }
 
-    if (lowerQuery.includes("event")) {
+    // Event-related queries
+    if (
+      lowerQuery.includes("event") ||
+      lowerQuery.includes("workshop") ||
+      lowerQuery.includes("hackathon") ||
+      lowerQuery.includes("conference") ||
+      lowerQuery.includes("competition") ||
+      lowerQuery.includes("ctf") ||
+      lowerQuery.includes("inceptrix") ||
+      lowerQuery.includes("schedule") ||
+      lowerQuery.includes("upcoming") ||
+      lowerQuery.includes("past") ||
+      lowerQuery.includes("when") ||
+      lowerQuery.includes("register") ||
+      lowerQuery.includes("participate")
+    ) {
       const isPastQuery = lowerQuery.includes("past");
       const isUpcomingQuery = lowerQuery.includes("upcoming") || lowerQuery.includes("next");
       
-      const currentDate = new Date("2025-05-07");
-      
       const filtered = eventData.filter((e) => {
-        // Convert date strings to comparable dates
-        const eventDateParts = e.date.split(", ");
-        const eventMonth = new Date(Date.parse(eventDateParts[0] + " 1, " + eventDateParts[1])).getMonth();
-        const eventYear = parseInt(eventDateParts[1]);
-        const eventDay = parseInt(e.date.split(" ")[1]);
-        
-        const eventDate = new Date(eventYear, eventMonth, eventDay);
+        // Consider events with links as upcoming, without links as past
+        const isUpcoming = !!e.link;
         
         if (isPastQuery) {
-          return eventDate < currentDate;
+          return !isUpcoming;
         }
         if (isUpcomingQuery) {
-          return eventDate >= currentDate;
+          return isUpcoming;
         }
         
         // If no time filter, return all matching events
@@ -101,25 +178,119 @@ const ChatBot = () => {
       if (filtered.length === 0) return { text: "No matching events found.", sender: "bot" };
 
       const list = filtered.map((e, i) => {
-        const eventDateParts = e.date.split(", ");
-        const eventMonth = new Date(Date.parse(eventDateParts[0] + " 1, " + eventDateParts[1])).getMonth();
-        const eventYear = parseInt(eventDateParts[1]);
-        const eventDay = parseInt(e.date.split(" ")[1]);
-        
-        const eventDate = new Date(eventYear, eventMonth, eventDay);
-        const isUpcoming = eventDate >= currentDate;
-        
-        // Modified registration button logic
-        const reg = (isUpcoming && e.link) ? `\n   - **[Register](${e.link})**` : "";
+        // Add register button only for events with links
+        const reg = e.link ? `\n   - **[Register](${e.link})**` : "";
         return `${i + 1}\\. **${e.name}**\n   - Date: ${e.date}\n   - Category: ${e.category}\n   - ${e.description}${reg}`;
       }).join("\n\n");
 
       return { text: `Here are the ${isPastQuery ? 'past' : isUpcomingQuery ? 'upcoming' : ''} events I found:\n\n${list}`, sender: "bot" };
     }
 
+    // Team-related queries
+    if (
+      lowerQuery.includes("team") ||
+      lowerQuery.includes("developer") ||
+      lowerQuery.includes("who made") ||
+      lowerQuery.includes("who created") ||
+      lowerQuery.includes("who developed") ||
+      lowerQuery.includes("creator") ||
+      lowerQuery.includes("member") ||
+      lowerQuery.includes("maintainer") ||
+      lowerQuery.includes("contact person") ||
+      lowerQuery.includes("pushkar") ||
+      lowerQuery.includes("abhishek") ||
+      lowerQuery.includes("kashish") ||
+      lowerQuery.includes("nikita")
+    ) {
+      const list = teamData.map((member, i) => 
+        `${i + 1}\\. **${member.name}**\n   - Email: ${member.email}\n   - **[LinkedIn](${member.linkedin})**`
+      ).join("\n\n");
+      return { text: `Here's our development team:\n\n${list}`, sender: "bot" };
+    }
+
+    // FAQ-related queries
+    if (
+      lowerQuery.includes("faq") ||
+      lowerQuery.includes("question") ||
+      lowerQuery.includes("help") ||
+      lowerQuery.includes("how to") ||
+      lowerQuery.includes("how do i") ||
+      lowerQuery.includes("what is") ||
+      lowerQuery.includes("can i") ||
+      lowerQuery.includes("guide") ||
+      lowerQuery.includes("support") ||
+      lowerQuery.includes("explain")
+    ) {
+      const list = faqData.map((faq, i) => 
+        `${i + 1}\\. **Q: ${faq.question}**\n   A: ${faq.answer}`
+      ).join("\n\n");
+      return { text: `Here are some frequently asked questions:\n\n${list}`, sender: "bot" };
+    }
+
+    // Contact-related queries
+    if (
+      lowerQuery.includes("contact") ||
+      lowerQuery.includes("reach") ||
+      lowerQuery.includes("location") ||
+      lowerQuery.includes("address") ||
+      lowerQuery.includes("phone") ||
+      lowerQuery.includes("call") ||
+      lowerQuery.includes("email") ||
+      lowerQuery.includes("mail") ||
+      lowerQuery.includes("message") ||
+      lowerQuery.includes("connect") ||
+      lowerQuery.includes("get in touch") ||
+      lowerQuery.includes("where") ||
+      lowerQuery.includes("office") ||
+      lowerQuery.includes("university") ||
+      lowerQuery.includes("jain") ||
+      lowerQuery.includes("fet")
+    ) {
+      return {
+        text: `You can reach us through:\n\n📧 Email: ${contactInfo.email}\n📱 Phone: ${contactInfo.phone}\n📍 Location: ${contactInfo.location}`,
+        sender: "bot"
+      };
+    }
+
+    // Greeting patterns
+    if (
+      lowerQuery.includes("hi") ||
+      lowerQuery.includes("hello") ||
+      lowerQuery.includes("hey") ||
+      lowerQuery.includes("greetings") ||
+      lowerQuery.includes("good morning") ||
+      lowerQuery.includes("good afternoon") ||
+      lowerQuery.includes("good evening")
+    ) {
+      return {
+        text: "Hello! 👋 How can I help you today? You can ask me about:\n- Clubs and memberships\n- Events and registrations\n- Team information\n- FAQs\n- Contact details",
+        sender: "bot"
+      };
+    }
+
+    // Thank you patterns
+    if (
+      lowerQuery.includes("thank") ||
+      lowerQuery.includes("thanks") ||
+      lowerQuery.includes("appreciate") ||
+      lowerQuery.includes("helpful")
+    ) {
+      return {
+        text: "You're welcome! 😊 Let me know if you need anything else!",
+        sender: "bot"
+      };
+    }
+
+    // Default response with improved suggestions
     return {
-      text: "I'm not sure I understand. Try asking about clubs, events, or how to use the website!",
-      sender: "bot",
+      text: "I'm not sure I understand. You can try asking about:\n\n" +
+            "📚 **Clubs**: Browse or join clubs\n" +
+            "📅 **Events**: Upcoming or past events\n" +
+            "👥 **Team**: Our development team\n" +
+            "❓ **FAQs**: Common questions\n" +
+            "📞 **Contact**: How to reach us\n\n" +
+            "Or try rephrasing your question!",
+      sender: "bot"
     };
   };
 
