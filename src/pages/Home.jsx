@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FiCalendar, FiExternalLink } from 'react-icons/fi';
+import ChatBot from "../components/ChatBot";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -199,6 +200,9 @@ export default function Home() {
           Get Started Now
         </button>
       </div>
+      
+      {/* Add ChatBot component */}
+      <ChatBot />
     </div>
   );
 }
