@@ -64,7 +64,9 @@ const ChatBot = () => {
       );
       if (filtered.length === 0) return { text: "No matching clubs found.", sender: "bot" };
 
-      const list = filtered.map((c, i) => `${i + 1}. **${c.name}**\nCategory: ${c.category}\nInstitute: ${c.institute}\n[Visit](${c.link})`).join("\n\n");
+      const list = filtered.map((c, i) => 
+        `${i + 1}\\. **${c.name}**\n   - Category: ${c.category}\n   - Institute: ${c.institute}\n   - **[Visit](${c.link})**`
+      ).join("\n\n");
       return { text: `Here are the clubs I found:\n\n${list}`, sender: "bot" };
     }
 
@@ -80,8 +82,8 @@ const ChatBot = () => {
       if (filtered.length === 0) return { text: "No matching events found.", sender: "bot" };
 
       const list = filtered.map((e, i) => {
-        const reg = e.isUpcoming ? `\n[Register](#)` : "";
-        return `${i + 1}. **${e.name}**\nDate: ${e.date}\nCategory: ${e.category}\n${e.description}${reg}`;
+        const reg = e.isUpcoming ? `   - **[Register](#)**` : "";
+        return `${i + 1}\\. **${e.name}**\n   - Date: ${e.date}\n   - Category: ${e.category}\n   - ${e.description}${reg}`;
       }).join("\n\n");
 
       return { text: `Here are the events I found:\n\n${list}`, sender: "bot" };
