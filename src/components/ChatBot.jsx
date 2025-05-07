@@ -15,10 +15,10 @@ const clubData = [
 ];
 
 const eventData = [
-  { name: "Inceptrix Hackathon", date: "May 8, 2025", category: "Hackathon", description: "A 48-hour hackathon focused on solving real-world problems.", isUpcoming: true },
-  { name: "AI Workshop", date: "June 15, 2025", category: "Workshop", description: "Learn AI and ML in this hands-on workshop.", isUpcoming: true },
-  { name: "Cloud Summit", date: "July 22, 2025", category: "Conference", description: "Explore cloud technologies with experts.", isUpcoming: true },
-  { name: "Cybersecurity CTF", date: "August 5, 2025", category: "Competition", description: "Capture The Flag competition on cybersecurity.", isUpcoming: true },
+  { name: "Inceptrix Hackathon", date: "May 8, 2025", category: "Hackathon", description: "A 48-hour hackathon focused on solving real-world problems.",link: "https://inceptrix2025.xyz/" },
+  { name: "AI Workshop", date: "June 15, 2025", category: "Workshop", description: "Learn AI and ML in this hands-on workshop.", },
+  { name: "Cloud Summit", date: "July 22, 2025", category: "Conference", description: "Explore cloud technologies with experts.", },
+  { name: "Cybersecurity CTF", date: "August 5, 2025", category: "Competition", description: "Capture The Flag competition on cybersecurity.", },
 ];
 
 const ChatBot = () => {
@@ -71,22 +71,50 @@ const ChatBot = () => {
     }
 
     if (lowerQuery.includes("event")) {
-      const upcomingOnly = lowerQuery.includes("upcoming") || lowerQuery.includes("next");
-      const filtered = eventData.filter(
-        (e) =>
-          (!upcomingOnly || e.isUpcoming) &&
-          (lowerQuery.includes("all") ||
-            lowerQuery.includes(e.name.toLowerCase()) ||
-            lowerQuery.includes(e.category.toLowerCase()))
-      );
+      const isPastQuery = lowerQuery.includes("past");
+      const isUpcomingQuery = lowerQuery.includes("upcoming") || lowerQuery.includes("next");
+      
+      const currentDate = new Date("2025-05-07");
+      
+      const filtered = eventData.filter((e) => {
+        // Convert date strings to comparable dates
+        const eventDateParts = e.date.split(", ");
+        const eventMonth = new Date(Date.parse(eventDateParts[0] + " 1, " + eventDateParts[1])).getMonth();
+        const eventYear = parseInt(eventDateParts[1]);
+        const eventDay = parseInt(e.date.split(" ")[1]);
+        
+        const eventDate = new Date(eventYear, eventMonth, eventDay);
+        
+        if (isPastQuery) {
+          return eventDate < currentDate;
+        }
+        if (isUpcomingQuery) {
+          return eventDate >= currentDate;
+        }
+        
+        // If no time filter, return all matching events
+        return lowerQuery.includes("all") ||
+          lowerQuery.includes(e.name.toLowerCase()) ||
+          lowerQuery.includes(e.category.toLowerCase());
+      });
+
       if (filtered.length === 0) return { text: "No matching events found.", sender: "bot" };
 
       const list = filtered.map((e, i) => {
-        const reg = e.isUpcoming ? `   - **[Register](#)**` : "";
+        const eventDateParts = e.date.split(", ");
+        const eventMonth = new Date(Date.parse(eventDateParts[0] + " 1, " + eventDateParts[1])).getMonth();
+        const eventYear = parseInt(eventDateParts[1]);
+        const eventDay = parseInt(e.date.split(" ")[1]);
+        
+        const eventDate = new Date(eventYear, eventMonth, eventDay);
+        const isUpcoming = eventDate >= currentDate;
+        
+        // Modified registration button logic
+        const reg = (isUpcoming && e.link) ? `\n   - **[Register](${e.link})**` : "";
         return `${i + 1}\\. **${e.name}**\n   - Date: ${e.date}\n   - Category: ${e.category}\n   - ${e.description}${reg}`;
       }).join("\n\n");
 
-      return { text: `Here are the events I found:\n\n${list}`, sender: "bot" };
+      return { text: `Here are the ${isPastQuery ? 'past' : isUpcomingQuery ? 'upcoming' : ''} events I found:\n\n${list}`, sender: "bot" };
     }
 
     return {
