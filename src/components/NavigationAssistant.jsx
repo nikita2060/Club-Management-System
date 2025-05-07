@@ -360,17 +360,9 @@ export default function NavigationAssistant() {
   }, [isOpen]);
 
   return (
-    <div className="fixed bottom-24 right-6 z-40">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-        title="Navigation Assistant"
-      >
-        {isOpen ? <FiX size={24} /> : <FiNavigation2 size={24} />}
-      </button>
-
+    <div className="fixed bottom-24 right-6 z-50">
       {isOpen && (
-        <div className="absolute bottom-16 right-0 w-80 bg-white rounded-lg shadow-xl border border-neutral-200">
+        <div className="absolute bottom-20 right-0 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-neutral-200 animate-fadeIn">
           <div className="bg-gradient-to-r from-primary-500 to-secondary-500 p-4">
             <h3 className="text-white font-medium">Navigation Assistant</h3>
             <p className="text-white/80 text-sm">Where would you like to go?</p>
@@ -385,10 +377,11 @@ export default function NavigationAssistant() {
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 placeholder="Ex: Take me to explore page..."
-                className="w-full px-4 py-2 rounded-lg border focus:ring-2"
+                className="w-full px-4 py-3 pr-10 rounded-lg border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent"
               />
+              
               {suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 bg-white border rounded-lg mt-1 shadow-lg">
+                <div className="absolute top-full left-0 right-0 bg-white border rounded-lg mt-1 shadow-lg max-h-48 overflow-y-auto">
                   {suggestions.map((suggestion, index) => (
                     <button
                       key={index}
@@ -398,10 +391,10 @@ export default function NavigationAssistant() {
                         handleNavigation(suggestion);
                         setSuggestions([]);
                       }}
-                      className={`w-full text-left px-4 py-2 text-sm ${
+                      className={`w-full text-left px-4 py-2 text-sm hover:bg-neutral-50 ${
                         index === selectedSuggestion 
-                          ? 'bg-primary-100 text-primary-700' 
-                          : 'hover:bg-gray-100'
+                          ? 'bg-primary-50 text-primary-700' 
+                          : 'text-neutral-700'
                       }`}
                     >
                       {suggestion}
@@ -409,16 +402,23 @@ export default function NavigationAssistant() {
                   ))}
                 </div>
               )}
+
               <button
                 type="submit"
                 disabled={isLoading}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-primary-500 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-primary-500 transition-colors disabled:opacity-50"
               >
                 <FiSend size={18} />
               </button>
             </form>
 
-            <div className="mt-3 text-xs text-neutral-500">
+            {response && (
+              <div className="mt-4 p-3 bg-primary-50 text-primary-700 rounded-lg text-sm">
+                {response}
+              </div>
+            )}
+
+            <div className="mt-4 text-xs text-neutral-500">
               Try asking:
               <ul className="mt-1 space-y-1">
                 <li>• "Take me to the events section"</li>
@@ -431,6 +431,18 @@ export default function NavigationAssistant() {
           </div>
         </div>
       )}
+
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 relative z-[51] ${
+          isOpen 
+            ? "bg-red-500 rotate-90" 
+            : "bg-gradient-to-r from-primary-500 to-secondary-500 hover:shadow-primary-300/50 hover:shadow-xl"
+        }`}
+        title="Navigation Assistant"
+      >
+        {isOpen ? <FiX className="text-white text-xl" /> : <FiNavigation2 className="text-white text-xl" />}
+      </button>
     </div>
   );
 }
