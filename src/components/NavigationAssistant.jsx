@@ -363,7 +363,7 @@ export default function NavigationAssistant() {
     <div className="fixed bottom-24 right-6 z-50">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        className="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
         title="Navigation Assistant"
       >
         {isOpen ? <FiX size={24} /> : <FiNavigation2 size={24} />}
