@@ -360,7 +360,7 @@ export default function NavigationAssistant() {
   }, [isOpen]);
 
   return (
-    <div className="fixed bottom-24 right-6 z-50">
+    <div className="fixed bottom-24 right-6 z-40">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
