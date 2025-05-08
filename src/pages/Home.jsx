@@ -72,7 +72,7 @@ export default function Home() {
           </div>
         </div>
         <div className="md:w-1/2 rounded-2xl overflow-hidden shadow-xl animate-slideIn">
-          <img src="/Images/Home Page.png" alt="ClubNect" className="w-full h-auto object-cover" />
+          <img src="/Images/Home Page.jpg" alt="ClubNect" className="w-full h-auto object-cover" />
         </div>
       </div>
 
