@@ -168,6 +168,7 @@ export default function NavigationAssistant() {
         if (Array.isArray(data) && data.includes(userQuery)) {
           navigate(navigationData[section].path);
           setResponse(`Taking you to ${section} page`);
+          setIsOpen(false); // Close navigation box
           return true;
         }
         
@@ -177,6 +178,7 @@ export default function NavigationAssistant() {
           if (data.main && data.main.includes(userQuery)) {
             navigate(navigationData[section].path);
             setResponse(`Taking you to ${section} page`);
+            setIsOpen(false); // Close navigation box
             return true;
           }
           
@@ -187,6 +189,7 @@ export default function NavigationAssistant() {
                 const path = navigationData[section].sections[subSection];
                 navigate(path);
                 setResponse(`Taking you to the ${subSection} section of ${section}`);
+                setIsOpen(false); // Close navigation box
                 return true;
               }
             }
@@ -198,6 +201,7 @@ export default function NavigationAssistant() {
               if (prompts.includes(userQuery)) {
                 navigate(navigationData.login.related[`register${regType.charAt(0).toUpperCase() + regType.slice(1)}`]);
                 setResponse(`Taking you to ${regType} registration`);
+                setIsOpen(false); // Close navigation box
                 return true;
               }
             }
@@ -219,18 +223,21 @@ export default function NavigationAssistant() {
       if (lowerQuery.includes('event') && lowerQuery.includes('section')) {
         navigate('/explore?tab=events');
         setResponse('Taking you to the events section');
+        setIsOpen(false); // Close navigation box
         return true;
       }
       
       if (lowerQuery.includes('club') && lowerQuery.includes('section')) {
         navigate('/explore?tab=clubs');
         setResponse('Taking you to the clubs section');
+        setIsOpen(false); // Close navigation box
         return true;
       }
       
       if (lowerQuery.includes('featured')) {
         navigate('/explore?tab=featured');
         setResponse('Taking you to the featured section');
+        setIsOpen(false); // Close navigation box
         return true;
       }
 
@@ -240,6 +247,7 @@ export default function NavigationAssistant() {
         if (lowerQuery.includes(section)) {
           navigate(`/about#${section}`);
           setResponse(`Taking you to the ${section} section`);
+          setIsOpen(false); // Close navigation box
           return true;
         }
       }
@@ -249,15 +257,18 @@ export default function NavigationAssistant() {
         if (lowerQuery.includes('club')) {
           navigate('/register/club');
           setResponse('Taking you to club registration');
+          setIsOpen(false); // Close navigation box
           return true;
         }
         if (lowerQuery.includes('organization') || lowerQuery.includes('org')) {
           navigate('/register/organization');
           setResponse('Taking you to organization registration');
+          setIsOpen(false); // Close navigation box
           return true;
         }
         navigate('/register/user');
         setResponse('Taking you to user registration');
+        setIsOpen(false); // Close navigation box
         return true;
       }
 
@@ -266,6 +277,7 @@ export default function NavigationAssistant() {
         if (data.keywords.some(keyword => lowerQuery.includes(keyword))) {
           navigate(data.path);
           setResponse(`Taking you to the ${page} page`);
+          setIsOpen(false); // Close navigation box
           return true;
         }
       }
@@ -390,6 +402,7 @@ export default function NavigationAssistant() {
                         setQuery(suggestion);
                         handleNavigation(suggestion);
                         setSuggestions([]);
+                        setIsOpen(false); // Close navigation box when clicking a suggestion
                       }}
                       className={`w-full text-left px-4 py-2 text-sm hover:bg-neutral-50 ${
                         index === selectedSuggestion 
