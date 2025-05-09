@@ -160,37 +160,48 @@ export default function NavigationAssistant() {
   const handleNavigation = (userQuery) => {
     setIsLoading(true);
     const lowerQuery = userQuery.toLowerCase();
-    
+
+    // Helper function to navigate and close
+    const navigateAndClose = (path, message) => {
+      navigate(path);
+      setResponse(message);
+      setIsOpen(false);
+      setIsLoading(false);
+      return true;
+    };
+
     // First check for exact matches from navigationPrompts
     const findExactMatch = () => {
       for (const [section, data] of Object.entries(navigationPrompts)) {
         // Handle main section prompts
         if (Array.isArray(data) && data.includes(userQuery)) {
-          navigate(navigationData[section].path);
-          setResponse(`Taking you to ${section} page`);
-          setIsOpen(false); // Close navigation box
-          return true;
+          return navigateAndClose(navigationData[section].path, 
+            `Taking you to ${section} page`);
         }
         
-        // Handle nested section prompts
         if (typeof data === 'object') {
           // Check main section prompts
           if (data.main && data.main.includes(userQuery)) {
-            navigate(navigationData[section].path);
-            setResponse(`Taking you to ${section} page`);
-            setIsOpen(false); // Close navigation box
-            return true;
+            return navigateAndClose(navigationData[section].path, 
+              `Taking you to ${section} page`);
           }
           
-          // Check subsections
-          if (data.sections) {
+          // Check subsections for explore
+          if (section === 'explore' && data.sections) {
             for (const [subSection, prompts] of Object.entries(data.sections)) {
               if (prompts.includes(userQuery)) {
-                const path = navigationData[section].sections[subSection];
-                navigate(path);
-                setResponse(`Taking you to the ${subSection} section of ${section}`);
-                setIsOpen(false); // Close navigation box
-                return true;
+                return navigateAndClose(`/explore?tab=${subSection}`,
+                  `Taking you to the ${subSection} section`);
+              }
+            }
+          }
+
+          // Check subsections for about
+          if (section === 'about' && data.sections) {
+            for (const [subSection, prompts] of Object.entries(data.sections)) {
+              if (prompts.includes(userQuery)) {
+                return navigateAndClose(`/about#${subSection}`,
+                  `Taking you to the ${subSection} section`);
               }
             }
           }
@@ -199,10 +210,8 @@ export default function NavigationAssistant() {
           if (section === 'login' && data.registration) {
             for (const [regType, prompts] of Object.entries(data.registration)) {
               if (prompts.includes(userQuery)) {
-                navigate(navigationData.login.related[`register${regType.charAt(0).toUpperCase() + regType.slice(1)}`]);
-                setResponse(`Taking you to ${regType} registration`);
-                setIsOpen(false); // Close navigation box
-                return true;
+                return navigateAndClose(`/register/${regType}`,
+                  `Taking you to ${regType} registration`);
               }
             }
           }
@@ -212,73 +221,60 @@ export default function NavigationAssistant() {
     };
 
     // Try exact match first
-    if (findExactMatch()) {
-      setIsLoading(false);
-      return;
-    }
+    if (findExactMatch()) return;
 
-    // Fallback to keyword matching for partial matches
+    // Keyword matching for partial matches
     const keywordMatch = () => {
-      // Check for specific sections first
-      if (lowerQuery.includes('event') && lowerQuery.includes('section')) {
-        navigate('/explore?tab=events');
-        setResponse('Taking you to the events section');
-        setIsOpen(false); // Close navigation box
-        return true;
+      // Check for specific explore sections
+      if (lowerQuery.includes('event')) {
+        return navigateAndClose('/explore?tab=events', 
+          'Taking you to the events section');
       }
       
-      if (lowerQuery.includes('club') && lowerQuery.includes('section')) {
-        navigate('/explore?tab=clubs');
-        setResponse('Taking you to the clubs section');
-        setIsOpen(false); // Close navigation box
-        return true;
+      if (lowerQuery.includes('club') && !lowerQuery.includes('register')) {
+        return navigateAndClose('/explore?tab=clubs', 
+          'Taking you to the clubs section');
       }
       
       if (lowerQuery.includes('featured')) {
-        navigate('/explore?tab=featured');
-        setResponse('Taking you to the featured section');
-        setIsOpen(false); // Close navigation box
-        return true;
+        return navigateAndClose('/explore?tab=featured', 
+          'Taking you to the featured section');
       }
 
-      // Check for about page sections
-      const aboutSections = ['team', 'story', 'contact', 'faq'];
-      for (const section of aboutSections) {
-        if (lowerQuery.includes(section)) {
-          navigate(`/about#${section}`);
-          setResponse(`Taking you to the ${section} section`);
-          setIsOpen(false); // Close navigation box
-          return true;
+      // Check for about sections
+      const aboutKeywords = {
+        team: ['team', 'members', 'who'],
+        story: ['story', 'history', 'about us'],
+        contact: ['contact', 'reach', 'support'],
+        faq: ['faq', 'question', 'help']
+      };
+
+      for (const [section, keywords] of Object.entries(aboutKeywords)) {
+        if (keywords.some(keyword => lowerQuery.includes(keyword))) {
+          return navigateAndClose(`/about#${section}`,
+            `Taking you to the ${section} section`);
         }
       }
 
-      // Check for registration intents
+      // Check for registration
       if (lowerQuery.includes('register') || lowerQuery.includes('signup')) {
         if (lowerQuery.includes('club')) {
-          navigate('/register/club');
-          setResponse('Taking you to club registration');
-          setIsOpen(false); // Close navigation box
-          return true;
+          return navigateAndClose('/register/club',
+            'Taking you to club registration');
         }
         if (lowerQuery.includes('organization') || lowerQuery.includes('org')) {
-          navigate('/register/organization');
-          setResponse('Taking you to organization registration');
-          setIsOpen(false); // Close navigation box
-          return true;
+          return navigateAndClose('/register/organization',
+            'Taking you to organization registration');
         }
-        navigate('/register/user');
-        setResponse('Taking you to user registration');
-        setIsOpen(false); // Close navigation box
-        return true;
+        return navigateAndClose('/register/user',
+          'Taking you to user registration');
       }
 
-      // Check for main pages
+      // Check main pages
       for (const [page, data] of Object.entries(navigationData)) {
         if (data.keywords.some(keyword => lowerQuery.includes(keyword))) {
-          navigate(data.path);
-          setResponse(`Taking you to the ${page} page`);
-          setIsOpen(false); // Close navigation box
-          return true;
+          return navigateAndClose(data.path,
+            `Taking you to the ${page} page`);
         }
       }
 
@@ -286,10 +282,7 @@ export default function NavigationAssistant() {
     };
 
     // Try keyword matching if exact match failed
-    if (keywordMatch()) {
-      setIsLoading(false);
-      return;
-    }
+    if (keywordMatch()) return;
 
     // No match found
     setResponse("I'm not sure where you want to go. Try asking about home, explore, about, or login pages!");
